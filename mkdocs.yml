@@ -45,7 +45,7 @@ nav:
     - Troubleshooting: troubleshooting.md
     - Development:
         - Development Setup: development_setup.md
-        - Contributing: ../CONTRIBUTING.md
+        - Contributing: CONTRIBUTING.md
     - Python 3.11 Features: python_311_features.md
 
 

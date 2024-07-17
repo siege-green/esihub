@@ -11,7 +11,7 @@ ESIHub is a powerful, asynchronous Python client for interacting with the EVE On
 - [Error Handling](error_handling.md)
 - [Examples](examples.md)
 - [Development Setup](development_setup.md)
-- [Contributing](../CONTRIBUTING.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Key Features
 
