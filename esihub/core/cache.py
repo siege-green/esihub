@@ -9,17 +9,17 @@ from ..core.logger import get_logger
 
 
 class ESICache:
-    def __init__(self, redis_url: Optional[str] = None):
-        self.redis_url = redis_url or esi_config.get("ESI_REDIS_URL")
+    def __init__(self):
+        self.redis_url = esi_config.get("ESI_REDIS_URL")
         self.logger = get_logger(__name__)
         self.redis: Optional[redis.Redis] = None
 
     async def initialize(self, fake=False):
         if self.redis_url and not fake:
             self.redis = await redis.from_url(self.redis_url, decode_responses=True)
+            await self.redis.ping()
         elif self.redis_url == "fakeredis" or fake:
             self.redis = await fakeredis.FakeAsyncRedis(decode_responses=True)
-        await self.redis.ping()
 
     async def get(self, key: str) -> Optional[Any]:
         if not self.redis:

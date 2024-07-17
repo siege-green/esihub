@@ -9,7 +9,7 @@ class ESIConfig:
             "ESI_CLIENT_SECRET": os.getenv("ESI_CLIENT_SECRET"),
             "ESI_CALLBACK_URL": os.getenv("ESI_CALLBACK_URL"),
             "ESI_BASE_URL": os.getenv("ESI_BASE_URL", "https://esi.evetech.net"),
-            "ESI_REDIS_URL": os.getenv("ESI_REDIS_URL", "redis://localhost"),
+            "ESI_REDIS_URL": os.getenv("ESI_REDIS_URL"),
             "ESI_LOG_LEVEL": os.getenv("ESI_LOG_LEVEL", "INFO"),
         }
 
