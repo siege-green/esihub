@@ -1,0 +1,90 @@
+site_name: ESIHub Documentation
+site_description: Documentation for the ESIHub Python client for EVE ONLINE ESI API
+site_author: MelonCafe
+repo_url: https://github.com/siege-green/esihub
+repo_name: siege-green/esihub
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - User Guide:
+    - Authentication: authentication.md
+    - Making Requests: making_requests.md
+    - Caching: caching.md
+    - Rate Limiting: rate_limiting.md
+    - Error Handling: error_handling.md
+  - API Reference:
+    - Client: api/client.md
+    - Models: api/models.md
+    - Exceptions: api/exceptions.md
+  - Advanced Topics:
+    - Batch Requests: advanced/batch_requests.md
+    - Event System: advanced/event_system.md
+    - Connection Pool: advanced/connection_pool.md
+    - Python 3.11 Features: python_311_features.md
+  - Development:
+    - Contributing: contributing.md
+    - Development Setup: development_setup.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/siege-green
+
+copyright: Copyright &copy; 2024 Siege Green

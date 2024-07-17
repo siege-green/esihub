@@ -1,0 +1,36 @@
+[flake8]
+# E501: Line length
+# E731: Do not assign a lambda expression, use a def
+# W503: Line break occurred before a binary operator (allowed in PEP8)
+ignore = E501, E731, W503
+
+# Maximum line length
+max-line-length = 240
+
+# Exclude some directories from being checked
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    alembic,
+    tests,
+    .venv,
+    examples
+
+# Show source code for each error
+show-source = True
+
+# Enable per-file-ignores
+per-file-ignores =
+    # Ignore F401 (imported but unused) for __init__.py files
+    __init__.py: F401
+
+    # Ignore F401 (imported but unused) for test files
+    tests/*: F401
+
+    # Ignore F401 (imported but unused) for examples files
+    helpers/*: F401
+
+    # Ignore F841 (local variable is assigned to but never used) for examples files
+    helpers/*: F841
