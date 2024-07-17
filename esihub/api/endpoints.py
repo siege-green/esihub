@@ -34,4 +34,3 @@ def generate_endpoints(client):
                         client, method, path, details["operationId"]
                     ),
                 )
-                logger.info(f"Generated endpoint method: {details['operationId']}")

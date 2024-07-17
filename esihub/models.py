@@ -6,7 +6,6 @@ from pydantic import BaseModel
 class ESIRequestParams(BaseModel):
     method: str
     path: str
-    character_id: Optional[int] = None
 
 
 class ESICharacter(BaseModel):
