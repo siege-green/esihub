@@ -30,26 +30,24 @@ theme:
 
 nav:
   - Home: index.md
-  - Getting Started: getting_started.md
   - User Guide:
+    - Configuration: configuration.md
+    - Usage:
+        - General Usage: usage.md
+        - Advanced Usage: advanced_usage.md
     - Authentication: authentication.md
-    - Making Requests: making_requests.md
-    - Caching: caching.md
-    - Rate Limiting: rate_limiting.md
+    - API Reference: api_reference.md
     - Error Handling: error_handling.md
-  - API Reference:
-    - Client: api/client.md
-    - Models: api/models.md
-    - Exceptions: api/exceptions.md
-  - Advanced Topics:
-    - Batch Requests: advanced/batch_requests.md
-    - Event System: advanced/event_system.md
-    - Connection Pool: advanced/connection_pool.md
+    - Guide:
+      - Detailed Guide: detailed_guide.md
+      - Comprehensive Guide: comprehensive_guide.md
+    - Examples: examples.md
+    - Troubleshooting: troubleshooting.md
+    - Development:
+        - Development Setup: development_setup.md
+        - Contributing: CONTRIBUTING.md
     - Python 3.11 Features: python_311_features.md
-  - Development:
-    - Contributing: contributing.md
-    - Development Setup: development_setup.md
-  - Changelog: changelog.md
+
 
 markdown_extensions:
   - admonition

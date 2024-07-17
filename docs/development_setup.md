@@ -5,7 +5,7 @@ This guide will help you set up your development environment for contributing to
 ## Prerequisites
 
 - Python 3.11 or higher
-- pip (Python package manager)
+- poetry (Python package manager)
 - Git
 
 ## Setting Up Your Development Environment
@@ -14,7 +14,7 @@ This guide will help you set up your development environment for contributing to
 
 2. Clone your fork locally:
    ```
-   git clone https://github.com/your-username/esihub.git
+   git clone https://github.com/siege-green/esihub.git
    cd esihub
    ```
 
@@ -35,18 +35,9 @@ This guide will help you set up your development environment for contributing to
 
 5. Install the development dependencies:
    ```
-   pip install -r requirements_dev.txt
+   poetry install
    ```
 
-6. Install ESIHub in editable mode:
-   ```
-   pip install -e .
-   ```
-
-7. Set up pre-commit hooks:
-   ```
-   pre-commit install
-   ```
 
 ## Running Tests
 

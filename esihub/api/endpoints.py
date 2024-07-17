@@ -1,4 +1,4 @@
-from typing import Dict, Any, Callable, Coroutine
+from typing import Any, Callable, Coroutine, Dict
 
 from ..core.logger import get_logger
 from ..utils import parse_path_params, replace_path_params

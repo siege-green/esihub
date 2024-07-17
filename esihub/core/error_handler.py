@@ -1,12 +1,8 @@
-from typing import Callable, Any
+from typing import Any, Callable
 
 from ..core.logger import get_logger
-from ..exceptions import (
-    ESIHubException,
-    ESIServerError,
-    ESIAuthenticationError,
-    ESIRateLimitExceeded,
-)
+from ..exceptions import (ESIAuthenticationError, ESIHubException,
+                          ESIRateLimitExceeded, ESIServerError)
 
 
 class ESIErrorHandler:

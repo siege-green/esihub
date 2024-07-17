@@ -4,7 +4,6 @@ ESIHub is a powerful, asynchronous Python client for interacting with the EVE On
 
 ## Navigation
 
-- [Getting Started](getting_started.md)
 - [Authentication](authentication.md)
 - [API Reference](api_reference.md)
 - [Advanced Usage](advanced_usage.md)
@@ -12,8 +11,7 @@ ESIHub is a powerful, asynchronous Python client for interacting with the EVE On
 - [Error Handling](error_handling.md)
 - [Examples](examples.md)
 - [Development Setup](development_setup.md)
-- [Python 3.11 Features](python_311_features.md)
-- [Contributing](../CONTRIBUTING.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Key Features
 
@@ -29,4 +27,53 @@ ESIHub is a powerful, asynchronous Python client for interacting with the EVE On
 - **Extensive Test Coverage**: Ensure reliability with our comprehensive test suite
 - **Python 3.11+ Support**: Leverage the latest Python features for improved performance and type hinting
 
-... (rest of the content remains the same)
+## Quick Start
+
+Here's a simple example to get you started with ESIHub:
+
+```python
+import asyncio
+from esihub import ESIHubClient
+
+async def main():
+    client = ESIHubClient(
+        client_id="your_client_id",
+        client_secret="your_client_secret",
+        callback_url="your_callback_url"
+    )
+
+    async with client:
+        # Get character information
+        character_id = 12345
+        character_info = await client.get_characters_character_id(character_id=character_id)
+        print(f"Character Info: {character_info}")
+
+asyncio.run(main())
+```
+
+## Installation
+
+You can install ESIHub using pip:
+
+```bash
+pip install esihub
+```
+
+## Documentation
+
+- [Authentication](authentication.md): Learn how to authenticate with the EVE Online SSO
+- [API Reference](api_reference.md): Detailed documentation of all available methods
+- [Advanced Usage](advanced_usage.md): Explore advanced features like caching, rate limiting, and event hooks
+- [Configuration](configuration.md): Learn how to configure ESIHub for your needs
+- [Error Handling](error_handling.md): Understand how to handle different types of errors
+- [Examples](examples.md): See ESIHub in action with real-world examples
+
+## Contributing
+
+We welcome contributions to ESIHub! If you'd like to contribute, please check out our [Contributing Guide](../CONTRIBUTING.md).
+
+## Support
+
+If you encounter any issues or have questions, please file an issue on our [GitHub repository](https://github.com/yourusername/esihub/issues).
+
+Happy coding with ESIHub!

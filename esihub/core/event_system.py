@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, List, Callable, Any
+from typing import Any, Callable, Dict, List
 
 from ..core.logger import get_logger
 

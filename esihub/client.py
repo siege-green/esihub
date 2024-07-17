@@ -15,7 +15,7 @@ from .core.error_handler import ESIErrorHandler
 from .core.event_system import ESIEventSystem
 from .core.logger import get_logger
 from .core.rate_limiter import ESIRateLimiter
-from .exceptions import ESIHubException, ESIAuthenticationError
+from .exceptions import ESIAuthenticationError, ESIHubException
 from .models import ESIRequestParams
 from .utils import load_swagger_spec
 
