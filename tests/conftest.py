@@ -1,5 +1,6 @@
 import fakeredis.aioredis
 import pytest
+
 from esihub import ESIHubClient
 from esihub.core.cache import ESICache
 

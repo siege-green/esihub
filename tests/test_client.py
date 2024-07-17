@@ -1,14 +1,12 @@
-import pytest
-from esihub import ESIHubClient
-from esihub.exceptions import (
-    ESIHubException,
-    ESIServerError,
-    ESIAuthenticationError,
-    ESIRateLimitExceeded,
-)
-from unittest.mock import patch, AsyncMock, MagicMock
-import aiohttp
 from types import SimpleNamespace
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import aiohttp
+import pytest
+
+from esihub import ESIHubClient
+from esihub.exceptions import (ESIAuthenticationError, ESIHubException,
+                               ESIRateLimitExceeded, ESIServerError)
 
 
 class MockResponse:
