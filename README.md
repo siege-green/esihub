@@ -32,11 +32,7 @@ import asyncio
 from esihub import ESIHubClient
 
 async def main():
-    client = ESIHubClient(
-        client_id="your_client_id",
-        client_secret="your_client_secret",
-        callback_url="your_callback_url"
-    )
+    client = ESIHubClient()
 
     async with client:
         # Get character information
