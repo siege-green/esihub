@@ -35,6 +35,7 @@ nav:
     - Usage:
         - General Usage: usage.md
         - Advanced Usage: advanced_usage.md
+        - Performance Optimization: performance_optimization.md
     - Authentication: authentication.md
     - API Reference: api_reference.md
     - Error Handling: error_handling.md

@@ -37,9 +37,10 @@ setup(
     ],
     python_requires=">=3.11",
     install_requires=[
-        "aiohttp>=3.8.0",
-        "aioredis>=2.0.0",
-        "pydantic>=2.0.0",
+        "aiohttp",
+        "pydantic",
+        "prometheus_client",
+        "cryptography",
     ],
     extras_require={
         "dev": [

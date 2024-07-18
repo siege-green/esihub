@@ -1,9 +1,7 @@
 from typing import Any, Callable, Coroutine, Dict
 
-from ..core.logger import get_logger
-from ..utils import parse_path_params, replace_path_params
-
-logger = get_logger(__name__)
+from esihub.core.logger import esihub_logger
+from esihub.utils import parse_path_params, replace_path_params
 
 
 def generate_endpoint_method(
@@ -12,7 +10,7 @@ def generate_endpoint_method(
     path_params = parse_path_params(path)
 
     async def endpoint_method(**kwargs) -> Dict[str, Any]:
-        logger.debug(f"Calling endpoint: {operation_id}")
+        esihub_logger.debug(f"Calling endpoint: {operation_id}")
         path_args = {k: kwargs.pop(k) for k in path_params if k in kwargs}
         formatted_path = replace_path_params(path, **path_args)
         return await client.request(method=method, path=formatted_path, **kwargs)
