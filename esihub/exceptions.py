@@ -1,22 +1,26 @@
-class ESIHubException(Exception):
-    """Base exception for ESIHub"""
+class ESIHubError(Exception):
+    def __init__(self, message: str, status_code: int = None, details: dict = None):
+        self.message = message
+        self.status_code = status_code
+        self.details = details or {}
+        super().__init__(self.message)
 
 
-class ESIServerError(ESIHubException):
-    """Raised when server returns an error"""
+class ESIHubAuthenticationError(ESIHubError):
+    pass
 
 
-class ESIAuthenticationError(ESIHubException):
-    """Raised when authentication fails"""
+class ESIHubRateLimitError(ESIHubError):
+    pass
 
 
-class ESIRateLimitExceeded(ESIHubException):
-    """Raised when rate limit is exceeded"""
+class ESIHubServerError(ESIHubError):
+    pass
 
 
-class ESIValidationError(ESIHubException):
-    """Raised when data validation fails"""
+class ESIHubClientError(ESIHubError):
+    pass
 
 
-class ESICacheError(ESIHubException):
-    """Raised when there's an error with caching"""
+class ESIHubValidationError(ESIHubError):
+    pass

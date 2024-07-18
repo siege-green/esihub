@@ -1,42 +1,59 @@
-from __future__ import annotations
+from typing import Dict, Any
+from urllib.parse import urlencode
 
-from datetime import datetime, timedelta
-from typing import TYPE_CHECKING, Any, Dict, Optional
+import aiohttp
 
-if TYPE_CHECKING:
-    from .client import ESIHubClient
-
-import asyncio
+from .core.config import ESIHubConfig
+from .exceptions import ESIHubAuthenticationError
 
 
-class ESITokenManager:
-    def __init__(self, client: "ESIHubClient"):
+class ESIHubAuth:
+    def __init__(self, client, config: ESIHubConfig):
         self.client = client
-        self.tokens: Dict[int, Dict[str, Any]] = {}
-        self.refresh_lock = asyncio.Lock()
+        self.config = config
 
-    async def get_token(self, character_id: int) -> Optional[str]:
-        if character_id in self.tokens:
-            token_info = self.tokens[character_id]
-            if datetime.now() >= token_info["expires_at"] - timedelta(minutes=5):
-                async with self.refresh_lock:
-                    if datetime.now() >= token_info["expires_at"] - timedelta(
-                        minutes=5
-                    ):
-                        new_tokens = await self.client.refresh_token(
-                            token_info["refresh_token"]
-                        )
-                        self.update_tokens(character_id, new_tokens)
-            return self.tokens[character_id]["access_token"]
-        return None
-
-    def update_tokens(self, character_id: int, tokens: Dict[str, Any]) -> None:
-        self.tokens[character_id] = {
-            "access_token": tokens["access_token"],
-            "refresh_token": tokens["refresh_token"],
-            "expires_at": datetime.now() + timedelta(seconds=tokens["expires_in"]),
+    async def get_auth_url(self, scopes: str = None, state: str = None) -> str:
+        params = {
+            "response_type": "code",
+            "redirect_uri": self.config.get("ESI_CALLBACK_URL"),
+            "client_id": self.config.get("ESI_CLIENT_ID"),
         }
+        if scopes:
+            params["scope"] = scopes
+        if state:
+            params["state"] = state
+        return f"https://login.eveonline.com/v2/oauth/authorize?{urlencode(params)}"
 
-    def remove_tokens(self, character_id: int) -> None:
-        if character_id in self.tokens:
-            del self.tokens[character_id]
+    async def get_access_token(self, code: str) -> Dict[str, Any]:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "https://login.eveonline.com/v2/oauth/token",
+                data={
+                    "grant_type": "authorization_code",
+                    "code": code,
+                    "client_id": self.config.get("ESI_CLIENT_ID"),
+                    "client_secret": self.config.get("ESI_CLIENT_SECRET"),
+                },
+            ) as resp:
+                if resp.status != 200:
+                    raise ESIHubAuthenticationError(
+                        f"Failed to get access token: {await resp.text()}"
+                    )
+                return await resp.json()
+
+    async def refresh_token(self, refresh_token: str) -> Dict[str, Any]:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "https://login.eveonline.com/v2/oauth/token",
+                data={
+                    "grant_type": "refresh_token",
+                    "refresh_token": refresh_token,
+                    "client_id": self.config.get("ESI_CLIENT_ID"),
+                    "client_secret": self.config.get("ESI_CLIENT_SECRET"),
+                },
+            ) as resp:
+                if resp.status != 200:
+                    raise ESIHubAuthenticationError(
+                        f"Failed to refresh token: {await resp.text()}"
+                    )
+                return await resp.json()

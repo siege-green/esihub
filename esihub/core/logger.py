@@ -1,19 +1,49 @@
+import json
 import logging
-from typing import Optional
-
-from ..core.config import esi_config
+from typing import Any, Dict
 
 
-def get_logger(name: str, level: Optional[int] = None) -> logging.Logger:
-    logger = logging.getLogger(name)
-    if level is None:
-        level = logging.getLevelName(esi_config.get("ESI_LOG_LEVEL", "INFO"))
-    logger.setLevel(level)
-    if not logger.handlers:
+class ESIHubLogger:
+    def __init__(self, name: str, level: int = logging.INFO):
+        self.logger = logging.getLogger(name)
+        self.set_level(level)
         handler = logging.StreamHandler()
         formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
         handler.setFormatter(formatter)
-        logger.addHandler(handler)
-    return logger
+        self.logger.addHandler(handler)
+
+    def set_level(self, level: int):
+        self.logger.setLevel(level)
+
+    def _format_log(self, message: str, extra: Dict[str, Any] = None) -> str:
+        log_data = {"message": message}
+        if extra:
+            log_data.update(extra)
+        return json.dumps(log_data)
+
+    def debug(self, message: str, extra: Dict[str, Any] = None):
+        self.logger.debug(self._format_log(message, extra))
+
+    def info(self, message: str, extra: Dict[str, Any] = None):
+        self.logger.info(self._format_log(message, extra))
+
+    def warning(self, message: str, extra: Dict[str, Any] = None):
+        self.logger.warning(self._format_log(message, extra))
+
+    def error(self, message: str, extra: Dict[str, Any] = None, exc_info: bool = False):
+        self.logger.error(self._format_log(message, extra), exc_info=exc_info)
+
+    def critical(
+        self, message: str, extra: Dict[str, Any] = None, exc_info: bool = False
+    ):
+        self.logger.critical(self._format_log(message, extra), exc_info=exc_info)
+
+
+esihub_logger = ESIHubLogger("esihub")
+
+
+def configure_logging(config):
+    log_level = getattr(logging, config.get("LOG_LEVEL", "INFO").upper())
+    esihub_logger.set_level(log_level)

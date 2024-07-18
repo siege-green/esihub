@@ -1,40 +1,55 @@
-from typing import Any, Callable
+from typing import Dict, Any
 
-from ..core.logger import get_logger
-from ..exceptions import (ESIAuthenticationError, ESIHubException,
-                          ESIRateLimitExceeded, ESIServerError)
+from .logger import esihub_logger
+from ..exceptions import (
+    ESIHubAuthenticationError,
+    ESIHubRateLimitError,
+    ESIHubClientError,
+    ESIHubServerError,
+    ESIHubError,
+)
 
 
-class ESIErrorHandler:
-    def __init__(self):
-        self.logger = get_logger(__name__)
-
-    async def handle_http_error(self, status_code: int, response_text: str) -> None:
+class ESIHubErrorHandler:
+    @staticmethod
+    async def handle_error(status_code: int, response_data: Dict[str, Any]) -> None:
+        error_message = response_data.get("error", "Unknown error")
         if 400 <= status_code < 500:
-            if status_code == 429:
-                raise ESIRateLimitExceeded(f"Rate limit exceeded: {response_text}")
-            elif status_code == 403:
-                raise ESIAuthenticationError(f"Authentication failed: {response_text}")
-            else:
-                raise ESIHubException(f"Client error: {status_code} - {response_text}")
-        elif status_code >= 500:
-            raise ESIServerError(f"Server error: {status_code} - {response_text}")
-
-    async def retry_with_backoff(
-        self, func: Callable[..., Any], max_retries: int = 3, base_delay: float = 1
-    ) -> Any:
-        import asyncio
-
-        retries = 0
-        while retries < max_retries:
-            try:
-                return await func()
-            except ESIHubException as e:
-                retries += 1
-                if retries == max_retries:
-                    raise
-                delay = base_delay * (2 ** (retries - 1))
-                self.logger.warning(
-                    f"Retry {retries}/{max_retries} after {delay} seconds. Error: {str(e)}"
+            if status_code == 401:
+                raise ESIHubAuthenticationError(
+                    f"Authentication failed: {error_message}",
+                    status_code,
+                    response_data,
                 )
-                await asyncio.sleep(delay)
+            elif status_code == 403:
+                raise ESIHubAuthenticationError(
+                    f"Insufficient permissions: {error_message}",
+                    status_code,
+                    response_data,
+                )
+            elif status_code == 420:
+                raise ESIHubRateLimitError(
+                    f"Rate limit exceeded: {error_message}", status_code, response_data
+                )
+            else:
+                raise ESIHubClientError(
+                    f"Client error: {error_message}", status_code, response_data
+                )
+        elif status_code >= 500:
+            raise ESIHubServerError(
+                f"Server error: {error_message}", status_code, response_data
+            )
+        else:
+            raise ESIHubError(
+                f"Unexpected error: {error_message}", status_code, response_data
+            )
+
+    @staticmethod
+    def log_error(error: Exception) -> None:
+        if isinstance(error, ESIHubError):
+            esihub_logger.error(
+                f"{error.__class__.__name__}: {str(error)}",
+                extra={"status_code": error.status_code, "details": error.details},
+            )
+        else:
+            esihub_logger.error(f"Unexpected error: {str(error)}", exc_info=True)
