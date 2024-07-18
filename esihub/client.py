@@ -56,7 +56,7 @@ class ESIHubClient:
         if self.config.get("USE_HTTPS") and not self.base_url.startswith("https://"):
             raise ValueError("HTTPS is required")
 
-        self.auth = auth or ESIHubAuth(self, config)
+        self.auth = auth or ESIHubAuth(config)
         self.cache = cache or ESIHubCache(config)
         self.rate_limiter = rate_limiter or ESIHubRateLimiter(config)
         self.error_handler = error_handler or ESIHubErrorHandler()
